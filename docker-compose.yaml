@@ -1,0 +1,23 @@
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: api-gateway
+    working_dir: /workspace
+    command: ["mvn", "spring-boot:run"]
+    volumes:
+      - .:/workspace
+      - gateway_maven_cache:/root/.m2
+      - gateway_target:/workspace/target
+    environment:
+      SERVER_PORT: 8080
+      EUREKA_DEFAULT_ZONE: http://localhost:8080/eureka/
+      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:-}
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+
+volumes:
+  gateway_maven_cache:
+  gateway_target:
